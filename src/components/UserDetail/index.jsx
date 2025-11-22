@@ -1,41 +1,53 @@
-import React from 'react';
-import { Typography, Card, CardContent, Button } from '@mui/material';
-import { useParams, Link } from 'react-router-dom';
-import models from '../../modelData/models';
-import './styles.css';
+import React, { useState, useEffect } from "react";
+import { Typography, Card, CardContent, Button } from "@mui/material";
+import { useParams, Link } from "react-router-dom";
+import fetchModel from "../../lib/fetchModelData";
+import "./styles.css";
 
 function UserDetail() {
-  // Lấy userId từ URL parameters
   const { userId } = useParams();
-  
-  // Lấy thông tin user từ model
-  const user = models.userModel(userId);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Gọi API lấy chi tiết user
+    fetchModel(`/user/${userId}`)
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user detail:", error);
+      });
+  }, [userId]); // Chạy lại khi userId thay đổi
 
   if (!user) {
-    return <Typography variant="h5">User not found</Typography>;
+    return (
+      <Typography variant="h6" style={{ padding: "20px" }}>
+        Loading...
+      </Typography>
+    );
   }
 
   return (
-    <Card style={{ margin: '20px' }}>
+    <Card style={{ margin: "20px" }}>
       <CardContent>
         <Typography variant="h4" gutterBottom>
           {user.first_name} {user.last_name}
         </Typography>
-        
+
         <Typography variant="body1" color="textSecondary" paragraph>
           <strong>Location:</strong> {user.location}
         </Typography>
-        
+
         <Typography variant="body1" color="textSecondary" paragraph>
           <strong>Occupation:</strong> {user.occupation}
         </Typography>
-        
+
         <Typography variant="body1" paragraph>
           <strong>Description:</strong> {user.description}
         </Typography>
 
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           color="primary"
           component={Link}
           to={`/photos/${user._id}`}
