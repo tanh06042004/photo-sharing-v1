@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Card, CardContent, Button } from "@mui/material";
 import { useParams, Link } from "react-router-dom";
-import fetchModel from "../../lib/fetchModelData";
+import axios from "axios"; // Thay fetchModel bằng axios
 import "./styles.css";
 
 function UserDetail() {
@@ -9,8 +9,11 @@ function UserDetail() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Gọi API lấy chi tiết user
-    fetchModel(`/user/${userId}`)
+    // Gọi API lấy chi tiết user từ Backend thật
+    const url = `https://zld62n-8082.csb.app/user/${userId}`;
+
+    axios
+      .get(url, { withCredentials: true })
       .then((response) => {
         setUser(response.data);
       })

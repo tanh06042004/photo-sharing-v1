@@ -7,15 +7,17 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import fetchModel from "../../lib/fetchModelData";
+import axios from "axios"; // Thay fetchModel bằng axios
 import "./styles.css";
 
 function UserList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Gọi API lấy danh sách user từ Backend
-    fetchModel("/user/list")
+    // Gọi API lấy danh sách user từ Backend thật
+    // Lưu ý: withCredentials: true là BẮT BUỘC để gửi session cookie đi
+    axios
+      .get("https://zld62n-8082.csb.app/user/list", { withCredentials: true })
       .then((response) => {
         setUsers(response.data);
       })
