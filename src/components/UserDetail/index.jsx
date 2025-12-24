@@ -6,7 +6,7 @@ import "./styles.css";
 function UserDetail({ currentUser }) {
   const { userId } = useParams();
   const [user, setUser] = useState(null);
-  // const [currentUser] = useState(null);
+
   useEffect(() => {
     // Gọi API lấy chi tiết user từ Backend thật
     const url = `https://zld62n-8082.csb.app/user/${userId}`;
@@ -47,7 +47,7 @@ function UserDetail({ currentUser }) {
         <Typography variant="body1" paragraph>
           <strong>Description:</strong> {user.description}
         </Typography>
-        {/* {currentUser && String(currentUser._id) === String(userId) && (
+        {currentUser && String(currentUser._id) === String(userId) && (
           <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
             <Button
               variant="contained"
@@ -57,17 +57,8 @@ function UserDetail({ currentUser }) {
             >
               Edit Profile
             </Button>
-
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to={`/photos/${userId}`}
-            >
-              View Photos
-            </Button>
           </Box>
-        )} */}
+        )}
         <Button
           variant="contained"
           color="primary"

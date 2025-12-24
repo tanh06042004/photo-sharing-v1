@@ -13,7 +13,7 @@ import UserDetail from "./components/UserDetail";
 import UserList from "./components/UserList";
 import UserPhotos from "./components/UserPhotos";
 import LoginRegister from "./components/LoginRegister";
-import EditProfile from "./components/EditProfile"; // Đừng quên import dòng này
+import EditProfile from "./components/EditProfile";
 
 const App = (props) => {
   const [user, setUser] = useState(null);
@@ -36,9 +36,6 @@ const App = (props) => {
           <Grid item sm={9}>
             <Paper className="main-grid-item">
               <Routes>
-                {/* -------------------------------------------------- */}
-                {/* KHỐI 1   */}
-                {/* Dùng user && (...) Nếu có user thì render cái này */}
                 {user && (
                   <>
                     <Route path="/users" element={<UserList />} />
@@ -49,9 +46,6 @@ const App = (props) => {
                     />
                   </>
                 )}
-
-                {/* -------------------------------------------------- */}
-                {/* KHỐI 2: Các route (Detail, Edit, Photos) */}
                 {user && (
                   <>
                     {/* Truyền currentUser vào các component này */}
@@ -69,10 +63,6 @@ const App = (props) => {
                     />
                   </>
                 )}
-
-                {/* -------------------------------------------------- */}
-                {/* KHỐI 3: Xử lý khi CHƯA đăng nhập (LoginRegister)   */}
-                {/* Chỉ hiện khi !user (không có user) */}
                 {!user && (
                   <Route
                     path="*"
