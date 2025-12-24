@@ -39,7 +39,6 @@ const App = (props) => {
                 {user && (
                   <>
                     <Route path="/users" element={<UserList />} />
-                    {/* Redirect mặc định */}
                     <Route
                       path="/"
                       element={<Navigate to={`/users/${user._id}`} />}
@@ -48,7 +47,6 @@ const App = (props) => {
                 )}
                 {user && (
                   <>
-                    {/* Truyền currentUser vào các component này */}
                     <Route
                       path="/users/:userId"
                       element={<UserDetail currentUser={user} />}
