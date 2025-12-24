@@ -13,9 +13,9 @@ import UserDetail from "./components/UserDetail";
 import UserList from "./components/UserList";
 import UserPhotos from "./components/UserPhotos";
 import LoginRegister from "./components/LoginRegister";
+import EditProfile from "./components/EditProfile"; // Đừng quên import dòng này
 
 const App = (props) => {
-  // State lưu thông tin user đăng nhập. Ban đầu là null (chưa login)
   const [user, setUser] = useState(null);
 
   return (
@@ -23,14 +23,12 @@ const App = (props) => {
       <div>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            {/* Truyền user và setUser xuống TopBar để hiển thị tên và nút Logout */}
             <TopBar user={user} setUser={setUser} />
           </Grid>
           <div className="main-topbar-buffer" />
 
           <Grid item sm={3}>
             <Paper className="main-grid-item">
-              {/* Nếu có user thì hiện danh sách, không thì thôi */}
               {user ? <UserList /> : <div />}
             </Paper>
           </Grid>
@@ -38,20 +36,44 @@ const App = (props) => {
           <Grid item sm={9}>
             <Paper className="main-grid-item">
               <Routes>
-                {/* Nếu đã đăng nhập (user tồn tại) thì cho phép truy cập các route */}
-                {user ? (
+                {/* -------------------------------------------------- */}
+                {/* KHỐI 1   */}
+                {/* Dùng user && (...) Nếu có user thì render cái này */}
+                {user && (
                   <>
-                    <Route path="/users/:userId" element={<UserDetail />} />
-                    <Route path="/photos/:userId" element={<UserPhotos />} />
                     <Route path="/users" element={<UserList />} />
-                    {/* Mặc định vào trang chi tiết của chính user đó */}
+                    {/* Redirect mặc định */}
                     <Route
                       path="/"
                       element={<Navigate to={`/users/${user._id}`} />}
                     />
                   </>
-                ) : (
-                  /* Nếu chưa đăng nhập, mọi đường dẫn đều hiển thị LoginRegister */
+                )}
+
+                {/* -------------------------------------------------- */}
+                {/* KHỐI 2: Các route (Detail, Edit, Photos) */}
+                {user && (
+                  <>
+                    {/* Truyền currentUser vào các component này */}
+                    <Route
+                      path="/users/:userId"
+                      element={<UserDetail currentUser={user} />}
+                    />
+                    <Route
+                      path="/users/:userId/edit"
+                      element={<EditProfile currentUser={user} />}
+                    />
+                    <Route
+                      path="/photos/:userId"
+                      element={<UserPhotos currentUser={user} />}
+                    />
+                  </>
+                )}
+
+                {/* -------------------------------------------------- */}
+                {/* KHỐI 3: Xử lý khi CHƯA đăng nhập (LoginRegister)   */}
+                {/* Chỉ hiện khi !user (không có user) */}
+                {!user && (
                   <Route
                     path="*"
                     element={<LoginRegister onLogin={setUser} />}
